@@ -1,0 +1,406 @@
+﻿<UserControl
+    x:Class="MusicUI.Views.CRUDView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:MusicUI.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <Expander Header="Track">
+                    <StackPanel>
+                        <TabControl>
+                            <TabItem Header="New">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+
+                                    <StackPanel Grid.Row="0" Margin="10">
+                                        <Label>Track name:</Label>
+                                        <TextBox Name="CreateTrackNameTextBox" />
+                                        <Label>Artist / Album:</Label>
+                                        <ComboBox Name="CreateTrackAlbumComboBox">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding Artist.Name}" />
+                                                        <Separator Width="10" Margin="10,0" />
+                                                        <TextBlock Text="{Binding Title}" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                        <Label>Genre:</Label>
+                                        <ComboBox Name="CreateTrackGenreComboBox">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding Name}" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                        <Label>Length:</Label>
+                                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                            <Label>Minutes</Label>
+                                            <ComboBox Name="CreateTrackLengthMinutes" Width="50" />
+                                            <TextBlock Margin="5,0" FontWeight="Bold">:</TextBlock>
+                                            <ComboBox Name="CreateTrackLengthSeconds" Width="50" />
+                                            <Label>Seconds</Label>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel
+                                        Grid.Row="1"
+                                        HorizontalAlignment="Center"
+                                        Orientation="Horizontal">
+                                        <Button
+                                            Name="CreateNewTrackkBtn"
+                                            Margin="10"
+                                            Padding="10"
+                                            Click="CreateNewTrackkBtn_OnClickBtn_OnClick">
+                                            Create
+                                        </Button>
+                                    </StackPanel>
+
+                                    <TextBlock
+                                        Name="CreateTrackErrorText"
+                                        Grid.Row="2"
+                                        Foreground="Red" />
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Modify">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+
+                                    <ListView
+                                        Name="TracksList"
+                                        Grid.Row="0"
+                                        MaxHeight="300"
+                                        SelectionChanged="ModifyTracksList_OnSelectionChanged"
+                                        SelectionMode="Single">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn DisplayMemberBinding="{Binding TrackId}">
+                                                    <GridViewColumn.Header>
+                                                        <GridViewColumnHeader Click="SortTracksListByColumnHeader_OnClick" Tag="TrackId">Track Id</GridViewColumnHeader>
+                                                    </GridViewColumn.Header>
+                                                </GridViewColumn>
+                                                <GridViewColumn DisplayMemberBinding="{Binding Name}">
+                                                    <GridViewColumn.Header>
+                                                        <GridViewColumnHeader Click="SortTracksListByColumnHeader_OnClick" Tag="Name">Title</GridViewColumnHeader>
+                                                    </GridViewColumn.Header>
+                                                </GridViewColumn>
+                                                <GridViewColumn DisplayMemberBinding="{Binding Album.Artist.Name}">
+                                                    <GridViewColumn.Header>
+                                                        <GridViewColumnHeader Click="SortTracksListByColumnHeader_OnClick" Tag="Album.Artist.Name">Artist</GridViewColumnHeader>
+                                                    </GridViewColumn.Header>
+                                                </GridViewColumn>
+                                                <GridViewColumn DisplayMemberBinding="{Binding Album.Title}">
+                                                    <GridViewColumn.Header>
+                                                        <GridViewColumnHeader Click="SortTracksListByColumnHeader_OnClick" Tag="Album.Title">Album</GridViewColumnHeader>
+                                                    </GridViewColumn.Header>
+                                                </GridViewColumn>
+                                                <GridViewColumn DisplayMemberBinding="{Binding Genre.Name}">
+                                                    <GridViewColumn.Header>
+                                                        <GridViewColumnHeader Click="SortTracksListByColumnHeader_OnClick" Tag="Genre.Name">Genre</GridViewColumnHeader>
+                                                    </GridViewColumn.Header>
+                                                </GridViewColumn>
+                                                <GridViewColumn DisplayMemberBinding="{Binding FormattedTime}">
+                                                    <GridViewColumn.Header>
+                                                        <GridViewColumnHeader Click="SortTracksListByColumnHeader_OnClick" Tag="FormattedTime">Length</GridViewColumnHeader>
+                                                    </GridViewColumn.Header>
+                                                </GridViewColumn>
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+
+                                    <StackPanel Grid.Row="1" Margin="10">
+                                        <Label>Track name:</Label>
+                                        <TextBox Name="UpdateTrackNameTextBox" />
+                                        <Label>Artist / Album:</Label>
+                                        <ComboBox Name="UpdateTrackAlbumComboBox">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding Artist.Name}" />
+                                                        <Separator Width="10" Margin="10,0" />
+                                                        <TextBlock Text="{Binding Title}" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                        <Label>Genre:</Label>
+                                        <ComboBox Name="UpdateTrackGenreComboBox">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding Name}" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                        <Label>Length:</Label>
+                                        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                            <Label>Minutes</Label>
+                                            <ComboBox Name="UpdateTrackLengthMinutes" Width="50" />
+                                            <TextBlock Margin="5,0" FontWeight="Bold">:</TextBlock>
+                                            <ComboBox Name="UpdateTrackLengthSeconds" Width="50" />
+                                            <Label>Seconds</Label>
+                                        </StackPanel>
+                                    </StackPanel>
+
+                                    <StackPanel
+                                        Grid.Row="2"
+                                        HorizontalAlignment="Center"
+                                        Orientation="Horizontal">
+                                        <Button
+                                            Name="UpdateTrackBtn"
+                                            Margin="10"
+                                            Padding="10"
+                                            Click="UpdateTrackBtn_OnClickBtn_OnClick">
+                                            Update
+                                        </Button>
+                                        <Button
+                                            Name="DeleteTrackBtn"
+                                            Margin="10"
+                                            Padding="10"
+                                            Click="DeleteTrackBtn_OnClickBtn_OnClick">
+                                            Delete
+                                        </Button>
+                                    </StackPanel>
+
+                                    <TextBlock
+                                        Name="ModifyTrackErrorText"
+                                        Grid.Row="3"
+                                        Foreground="Red" />
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
+                    </StackPanel>
+                </Expander>
+
+                <Expander Header="Artist">
+                    <StackPanel>
+                        <TabControl>
+                            <TabItem Header="New">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+
+                                    <StackPanel Grid.Row="0" Margin="10">
+                                        <Label>Artist name:</Label>
+                                        <TextBox Name="NewArtistNameTextBox" />
+                                    </StackPanel>
+
+                                    <StackPanel
+                                        Grid.Row="1"
+                                        HorizontalAlignment="Center"
+                                        Orientation="Horizontal">
+                                        <Button
+                                            Name="CreateNewArtistBtn"
+                                            Margin="10"
+                                            Padding="10"
+                                            Click="CreateNewArtistBtn_OnClick">
+                                            Create
+                                        </Button>
+                                    </StackPanel>
+
+                                    <TextBlock
+                                        Name="NewArtistErrorText"
+                                        Grid.Row="2"
+                                        Foreground="Red" />
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Modify">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+
+                                    <ListView
+                                        Name="ModifyArtistsList"
+                                        Grid.Row="0"
+                                        MaxHeight="300"
+                                        SelectionChanged="ModifyArtistsList_OnSelectionChanged"
+                                        SelectionMode="Single">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn DisplayMemberBinding="{Binding ArtistId}" Header="Artist Id" />
+                                                <GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name" />
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+
+                                    <StackPanel Grid.Row="1" Margin="10">
+                                        <Label>Artist name:</Label>
+                                        <TextBox Name="UpdateArtistNameTextBox" />
+                                    </StackPanel>
+
+                                    <StackPanel
+                                        Grid.Row="2"
+                                        HorizontalAlignment="Center"
+                                        Orientation="Horizontal">
+                                        <Button
+                                            Name="UpdateArtistBtn"
+                                            Margin="10"
+                                            Padding="10"
+                                            Click="UpdateArtistBtn_OnClick">
+                                            Update
+                                        </Button>
+                                        <Button
+                                            Name="DeleteArtistBtn"
+                                            Margin="10"
+                                            Padding="10"
+                                            Click="DeleteArtistBtn_OnClick">
+                                            Delete
+                                        </Button>
+                                    </StackPanel>
+
+                                    <TextBlock
+                                        Name="ModifyArtistErrorText"
+                                        Grid.Row="3"
+                                        Foreground="Red" />
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
+                    </StackPanel>
+                </Expander>
+
+                <Expander Header="Album">
+                    <StackPanel>
+                        <TabControl>
+                            <TabItem Header="New">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+
+                                    <StackPanel Grid.Row="1" Margin="10">
+                                        <Label>Album title:</Label>
+                                        <TextBox Name="NewAlbumNameTextBox" />
+                                        <Label>Artist:</Label>
+                                        <ComboBox Name="NewAlbumArtistComboBox">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding Name}" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                    </StackPanel>
+
+                                    <StackPanel
+                                        Grid.Row="2"
+                                        HorizontalAlignment="Center"
+                                        Orientation="Horizontal">
+                                        <Button
+                                            Name="CreateNewAlbumBtn"
+                                            Margin="10"
+                                            Padding="10"
+                                            Click="CreateNewAlbumBtn_OnClick">
+                                            Create
+                                        </Button>
+                                    </StackPanel>
+
+                                    <TextBlock
+                                        Name="NewAlbumErrorText"
+                                        Grid.Row="3"
+                                        Foreground="Red" />
+                                </Grid>
+                            </TabItem>
+                            <TabItem Header="Modify">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+
+                                    <ListView
+                                        Name="ModifyAlbumsList"
+                                        Grid.Row="0"
+                                        MaxHeight="290"
+                                        SelectionChanged="ModifyAlbumsList_OnSelectionChanged"
+                                        SelectionMode="Single">
+                                        <ListView.View>
+                                            <GridView>
+                                                <GridViewColumn DisplayMemberBinding="{Binding AlbumId}" Header="Album Id" />
+                                                <GridViewColumn DisplayMemberBinding="{Binding Title}" Header="Album Title" />
+                                                <GridViewColumn DisplayMemberBinding="{Binding Artist.Name}" Header="Artist" />
+                                            </GridView>
+                                        </ListView.View>
+                                    </ListView>
+
+                                    <StackPanel Grid.Row="1" Margin="10">
+                                        <Label>Album title:</Label>
+                                        <TextBox Name="UpdateAlbumNameTextBox" />
+                                        <Label>Artist:</Label>
+                                        <ComboBox Name="UpdateAlbumArtistComboBox">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <!--<TextBlock Text="{Binding ArtistId}" />
+                                                        <Separator Width="10" Visibility="Hidden" />-->
+                                                        <TextBlock Text="{Binding Name}" />
+                                                    </StackPanel>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+                                        </ComboBox>
+                                    </StackPanel>
+
+                                    <StackPanel
+                                        Grid.Row="2"
+                                        HorizontalAlignment="Center"
+                                        Orientation="Horizontal">
+                                        <Button
+                                            Name="UpdateAlbumBtn"
+                                            Margin="10"
+                                            Padding="10"
+                                            Click="UpdateAlbumBtn_OnClick">
+                                            Update
+                                        </Button>
+                                        <Button
+                                            Name="DeleteAlbumBtn"
+                                            Margin="10"
+                                            Padding="10"
+                                            Click="DeleteAlbumBtn_OnClick">
+                                            Delete
+                                        </Button>
+                                    </StackPanel>
+
+                                    <TextBlock
+                                        Name="ModifyAlbumErrorText"
+                                        Grid.Row="3"
+                                        Foreground="Red" />
+                                </Grid>
+                            </TabItem>
+                        </TabControl>
+                    </StackPanel>
+                </Expander>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>
+<!--  // Name*, AlbumId?, MediaTypeId*, GenreId?, Composer?, Milliseconds*, Bytes?, UnitPrice*  -->
