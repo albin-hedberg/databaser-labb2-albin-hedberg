@@ -1,3 +1,5 @@
+![Exempel-bild](https://github.com/albin-hedberg/databaser-labb2-albin-hedberg/blob/main/Exempel-bild1.png)
+
 # Labb 2 - Applikation med EntityFramework Database first
 
 ## Utveckla en databasapp med Entity Framework
